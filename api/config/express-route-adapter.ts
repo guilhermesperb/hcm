@@ -1,0 +1,22 @@
+import { Request, Response } from 'express';
+// import { axiosConfig } from '../config/axios-config';
+import { HttpRequest } from '../protocols/http/http';
+import { Controller } from '../protocols/controller/controller';
+
+export const adaptRoute = (controller: Controller) => {
+  return async (req: Request, res: Response) => {
+    const httpRequest: HttpRequest = {
+      header: {
+        authorization: '',
+      },
+      body: req.body
+    };
+
+    // const compufacilHeader = <string>req.header('Authorization-Compufacil');
+    // axiosConfig(compufacilHeader);
+    // httpRequest.header.authorization = compufacilHeader;
+
+    const httpResponse = await controller.handle(httpRequest);
+    res.status(httpResponse.statusCode).json(httpResponse.body);
+  }
+};
