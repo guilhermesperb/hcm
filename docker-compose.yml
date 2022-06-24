@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+  hcm-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.api
+    image: node
+    container_name: hcm-api
+    ports:
+      - '3001:3001'
+    command: npm run start
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+
+  hcm-postgres:
+    image: postgres
+    container_name: hcm-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hcm
+      TZ: America/Sao_Paulo
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data/postgres-data:/var/lib/postgresql/data:z
