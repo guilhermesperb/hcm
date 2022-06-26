@@ -11,18 +11,39 @@ services:
     command: npm run start
     volumes:
       - ./api:/app
-      - /app/node_modules
-
-  hcm-postgres:
-    image: postgres
-    container_name: hcm-postgres
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: hcm
-      TZ: America/Sao_Paulo
+      # - /app/node_modules
+    depends_on:
+      - hcm-kafka
+  
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.4.1
+    container_name: zookeeper
+    restart: unless-stopped
     ports:
-      - '5432:5432'
-    volumes:
-      - ./data/postgres-data:/var/lib/postgresql/data:z
+        - "2181:2181"
+    environment:
+        ZOOKEEPER_CLIENT_PORT: 2181
+        TZ: "${TZ-Europe/Berlin}"
+    healthcheck:
+        test: "echo stat | nc localhost $$ZOOKEEPER_CLIENT_PORT"
+        start_period: 1m
+
+  kafka:
+    image: confluentinc/cp-kafka:5.4.1
+    container_name: kafka
+    restart: unless-stopped
+    depends_on:
+        - filebeat
+        - zookeeper
+    ports:
+        - "29092:29092"
+    environment:
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        KAFKA_DELETE_TOPIC_ENABLE: "true"
+        TZ: "${TZ-Europe/Berlin}"
+    healthcheck:
+        test: [ "CMD", "nc", "-z", "localhost", "9092" ]
+        start_period: 1m

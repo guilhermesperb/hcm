@@ -9,7 +9,7 @@ import { ValidationData } from "../types/validation-data";
 export class ClockingController implements Controller{
     constructor(
         private readonly clockingRepository: ClockingRepository,
-        private readonly legacyClockingRepository: LegacyClockingRepository,
+        // private readonly legacyClockingRepository: LegacyClockingRepository,
         private readonly validator: Validator
     ){}
     
@@ -20,7 +20,7 @@ export class ClockingController implements Controller{
         }
 
         this.clockingRepository.add(request.body as ClockingData);
-        this.legacyClockingRepository.send(request.body as ClockingData)
+        // this.legacyClockingRepository.send(request.body as ClockingData)
         return await ok({});
 
     }

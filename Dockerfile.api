@@ -1,7 +1,7 @@
 FROM node:16
 WORKDIR /app
-COPY ./api/package.json /app
-RUN yarn
-COPY . .
+# COPY ./api/package.json /app
+# RUN npm install
+# COPY ./api .
 EXPOSE 3001
 CMD ["npm", "run", "start"]
