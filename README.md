@@ -2,7 +2,10 @@
 
 ## Solução
 Aplicação desenvolvida para servir como gateway entre as aplicações frontend de marcação de ponto e o sistema legado da companhia.
-Através de uma API em NodeJS, é possível tratar milhares de requisições com um tempo de resposta muito menor do que o sistema legado é capaz de responder. Juntamente com a fila criada com o Apache Kafka, milhares de requisições são recebidas e enviadas conforme a disponibilidade para a API legada, sem atrasos de resposta para o usuário, que terá a confirmação logo após o recebimento da primeira API.
+
+Através de uma API em NodeJS, é possível tratar milhares de requisições com um tempo de resposta muito menor do que o sistema legado é capaz de responder. 
+
+Juntamente com a fila criada com o Apache Kafka, todas as requisições são recebidas e enviadas conforme a disponibilidade para a API legada, sem atrasos de resposta para o usuário, que terá a confirmação logo após o recebimento da primeira API.
  
 
 ## Execução
