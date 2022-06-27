@@ -1,8 +1,9 @@
 import axios, { Axios } from 'axios'
+import environment from '../config/environment';
 
 export const legacyClockingSend = async (data: any) => {
     const legacyApi: Axios = axios.create({
-        baseURL: 'https://api.mockytonk.com/'
+        baseURL: environment.LEGACY_CLOCKING_URL
     });
 
     try {

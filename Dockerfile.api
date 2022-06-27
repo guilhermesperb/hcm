@@ -2,7 +2,7 @@ FROM node:16
 WORKDIR /app
 
 COPY ./api .
-RUN npm install && npm run build
+RUN cp .env.example .env && npm install && npm run build
 
 EXPOSE 3001
 

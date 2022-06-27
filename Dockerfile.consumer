@@ -2,6 +2,6 @@ FROM node:16
 WORKDIR /app
 
 COPY ./consumer .
-RUN npm install && npm run build
+RUN cp .env.example .env && npm install && npm run build
 
 CMD ["node", "./dist/index.js"]

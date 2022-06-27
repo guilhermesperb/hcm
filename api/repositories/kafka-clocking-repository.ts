@@ -1,13 +1,14 @@
 import { ClockingData } from "../types/clocking-data";
 import { ClockingRepository } from "../protocols/repository/clocking-repository";
-import { Kafka, Producer } from "kafkajs";
+import { Kafka } from "kafkajs";
 import { v4 as uuidv4 } from 'uuid';
+import  environment  from '../config/environment';
 
 export class KafkaClockingRepository implements ClockingRepository{
     private kafka: Kafka;
     
     constructor(){
-        this.kafka = new Kafka({ clientId: "hcm", brokers: ["kafka:9092"] })
+        this.kafka = new Kafka({ clientId: environment.KAFKA_ID, brokers: [environment.KAFKA_HOST || ''] })
     }
     
     async add(data: ClockingData): Promise<ClockingData> {
@@ -15,7 +16,7 @@ export class KafkaClockingRepository implements ClockingRepository{
         await producer.connect()
         try {
             const teste = await producer.send({
-                topic: "hcm-register",
+                topic: environment.KAFKA_TOPIC || '',
                 messages: [
                     {
                         key: uuidv4(),
