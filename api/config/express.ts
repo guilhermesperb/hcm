@@ -6,7 +6,7 @@ import { corsHeaders } from './cors-headers';
 const app = express();
 
 app.use(cors({
-    origin: ['*', 'http://localhost:80', 'http://localhost', 'http://localhost/', 'https://hcm.guilhermesperb.com.br/']
+    origin: ['*', 'http://localhost:8000', 'http://localhost:8000/', 'https://hcm.guilhermesperb.com.br/']
 }));
 app.use(corsHeaders);
 app.use(express.json());
