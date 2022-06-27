@@ -1,15 +1,22 @@
 import { Kafka, EachMessagePayload } from "kafkajs";
-import { legacyClockingSend } from './legacy-clocking';
 
 export const kafkaConsumer = async (legacyClockingSender: any) => {
-    const kafka: Kafka = new Kafka({clientId: 'hcm',  brokers: ["localhost:29092"]})
+    const kafka: Kafka = new Kafka({
+        clientId: 'hcm', 
+        // brokers: ["localhost:29092"],
+        brokers: ["kafka:9092"],
+        retry: {
+            maxRetryTime: 30000,
+            initialRetryTime: 300,
+            retries: 12
+        }
+    })
     const consumer = kafka.consumer({ groupId: 'hcm' })        
     
     await consumer.connect()
     await consumer.subscribe({ topic: 'hcm-register' })
     await consumer.run({
         eachMessage: async (payload: EachMessagePayload) => {
-            // console.log(`received message: ${payload.message.value}`)
             try {
                 legacyClockingSender(payload.message.value)
             } catch (e) {

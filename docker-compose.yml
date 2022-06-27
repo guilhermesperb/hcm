@@ -1,19 +1,30 @@
 version: '3.3'
 services:
+  frontend:
+    image: nginx:alpine
+    ports:
+        - 80:80
+    volumes:
+        - ./frontend:/usr/share/nginx/html
   hcm-api:
     build:
       context: .
       dockerfile: ./Dockerfile.api
-    image: node
     container_name: hcm-api
     ports:
       - '3001:3001'
-    command: npm run start
-    volumes:
-      - ./api:/app
-      # - /app/node_modules
     depends_on:
-      - hcm-kafka
+      kafka:
+        condition: service_healthy
+
+  hcm-consumer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.consumer
+    container_name: hcm-consumer
+    depends_on:
+      kafka:
+        condition: service_healthy
   
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.1
@@ -23,7 +34,6 @@ services:
         - "2181:2181"
     environment:
         ZOOKEEPER_CLIENT_PORT: 2181
-        TZ: "${TZ-Europe/Berlin}"
     healthcheck:
         test: "echo stat | nc localhost $$ZOOKEEPER_CLIENT_PORT"
         start_period: 1m
@@ -43,7 +53,6 @@ services:
         KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
         KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
         KAFKA_DELETE_TOPIC_ENABLE: "true"
-        TZ: "${TZ-Europe/Berlin}"
     healthcheck:
         test: [ "CMD", "nc", "-z", "localhost", "9092" ]
         start_period: 1m
