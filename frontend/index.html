@@ -1,9 +1,47 @@
 <html>
 <head>
     <script src="./index.js"></script>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: 600;
+            font-size: 8px;
+        }
+        #newAPI {
+            border: 1px solid;
+            background-color: #4dd0e1;
+        }
+        #oldAPI {
+            border: 1px solid;
+            background-color: #e57373;
+        }
+    </style>
+    <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Pontos Registrados</h1>
-    <p id='registers'></p>
+    <h1>Pontos Registrados através da nova API</h1>
+    <table id="newAPI">
+        <tr>
+            <td>Pontos Enviados</td>
+            <td><spam id="registers"></spam></td>
+        </tr>
+        <tr>
+            <td><strong>Tempo Total</strong></td>
+            <td><strong><spam id="timeAPI"></spam></strong></td>
+        </tr>
+    </table>
+
+    <h1>Pontos Registrados através do sistema legado</h1>
+    <table id="oldAPI">
+        <tr>
+            <td>Pontos Enviados</td>
+            <td><spam id="registersLegacy"></spam></td>
+        </tr>
+        <tr>
+            <td><strong>Tempo Total</strong></td>
+            <td><strong><spam id="timeLegacy"></spam></strong></td>
+        </tr>
+    </table>
+    <!-- <p id='registers'></p> -->
 </body>
 </html>
