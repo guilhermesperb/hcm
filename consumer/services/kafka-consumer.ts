@@ -8,7 +8,7 @@ export const kafkaConsumer = async (legacyClockingSender: any) => {
         retry: {
             maxRetryTime: 30000,
             initialRetryTime: 300,
-            retries: 12
+            retries: 20
         }
     })
     const consumer = kafka.consumer({ groupId: environment.KAFKA_ID || '' })

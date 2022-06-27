@@ -8,7 +8,15 @@ export class KafkaClockingRepository implements ClockingRepository{
     private kafka: Kafka;
     
     constructor(){
-        this.kafka = new Kafka({ clientId: environment.KAFKA_ID, brokers: [environment.KAFKA_HOST || ''] })
+        this.kafka = new Kafka({
+            clientId: environment.KAFKA_ID, 
+            brokers: [environment.KAFKA_HOST || ''],
+            retry: {
+                maxRetryTime: 30000,
+                initialRetryTime: 300,
+                retries: 20
+            }
+        })
     }
     
     async add(data: ClockingData): Promise<ClockingData> {

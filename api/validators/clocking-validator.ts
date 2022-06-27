@@ -3,7 +3,16 @@ import { ValidationData } from "../types/validation-data";
 
 export class ClockingValidator implements Validator{
     validate(data: any): ValidationData{
-        // return {status: false, message: 'not implemented'}
-        return {status: true, message: 'not implemented'}
+        if (!data.includeAt) {
+            return {status: false, message: 'includeAt missing'}
+        }
+        if (!data.employeeId) {
+            return {status: false, message: 'employeeId missing'}
+        }
+        if (!data.employerId) {
+            return {status: false, message: 'employerId missing'}
+        }
+
+        return {status: true, message: 'ok'}
     }
 }

@@ -52,7 +52,7 @@ function sendClockingRegisterLegacy(data){
     })
 }
 
-const maxRequests = 15;
+const maxRequests = 20
 var countAPI = 0;
 var countLegacy = 0;
 const initialTime = new Date()

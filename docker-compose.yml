@@ -14,8 +14,7 @@ services:
     ports:
       - '3001:3001'
     depends_on:
-      kafka:
-        condition: service_healthy
+      - kafka
 
   hcm-consumer:
     build:
@@ -23,8 +22,7 @@ services:
       dockerfile: ./Dockerfile.consumer
     container_name: hcm-consumer
     depends_on:
-      kafka:
-        condition: service_healthy
+      - kafka
   
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.1
